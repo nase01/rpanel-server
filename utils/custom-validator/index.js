@@ -4,6 +4,7 @@ import { isName } from './lib/isName.js'
 import { isPostalCode } from './lib/isPostalCode.js'
 import { isPrice } from './lib/isPrice.js'
 import { isStoreName } from './lib/isStoreName.js'
+import { isValidUrl } from './lib/isValidUrl.js'
 
 export const customValidator = {
   isAddressString,
@@ -11,5 +12,6 @@ export const customValidator = {
   isName,
   isPostalCode,
   isPrice,
-  isStoreName
+  isStoreName,
+  isValidUrl
 }

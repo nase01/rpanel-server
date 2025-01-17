@@ -2,7 +2,7 @@ import express from 'express'
 
 // Controllers
 import { authAdmin, authCurrentAdmin, signOutAdmin } from '../controllers/authentication/admin.js'
-import { adminAccountUpdate, adminAccountChangePW } from '../controllers/account/admin.js'
+import { adminAccountUpdate, adminAccountChangePW, adminAvatarCreate } from '../controllers/account/admin.js'
 
 import { passwordReset } from '../controllers/account/passwordReset.js'
 
@@ -26,6 +26,7 @@ routerAdmin.post('/admin/auth/signout', signOutAdmin)
 routerAdmin.put('/admin/account/update', adminAuthenticated, adminAccountUpdate)
 routerAdmin.put('/admin/account/pwchange', adminAuthenticated, adminAccountChangePW)
 routerAdmin.put('/admin/account/pwreset', passwordReset)
+routerAdmin.post('/admin/account/avatar', adminAuthenticated, adminAvatarCreate)
 
 
 // Admin User Management

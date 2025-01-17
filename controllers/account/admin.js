@@ -1,9 +1,11 @@
 import bcrypt from 'bcryptjs'
 import validator from 'validator'
+import { Avatar } from '../../models/mongoose/Avatar.js'
 import { AdminLog } from '../../models/mongoose/AdminLog.js'
 import { adminValidate } from '../../utils/input-validate/adminValidate.js'
 import { strongPwOpts } from '../../utils/strongPwOpts.js'
 import { userIp } from '../../utils/userIp.js'
+import { customValidator } from '../../utils/custom-validator/index.js'
 
 export const adminAccountUpdate = async (req, res) => {
   try {
@@ -115,6 +117,40 @@ export const adminAccountChangePW = async (req, res) => {
 
     return res.status(200).json({ data: { success: true } })
   } catch (error) {
+    return res.status(500).json({ errors: [{ status: '500', detail: 'Internal Server Error' }] })
+  }
+}
+
+export const adminAvatarCreate = async (req, res) => {
+	try {
+		
+		const ip = userIp(req)
+		const self = req.currentAdmin
+
+		if (req.body.imageUrl == "") {
+				return res.status(400).json({ errors: [{ status: '400', detail: "imageUrl is required" }] })
+		}
+
+		if (!customValidator.isValidUrl(req.body.imageUrl)) {
+			return res.status(400).json({ errors: [{ status: '400', detail: "Invalid imageUrl" }] })
+		}
+
+    const avatar = await Avatar.findOneAndUpdate(
+      { imageUrl: req.body.imageUrl },
+      { adminId: self.id, imageUrl: req.body.imageUrl },
+      { new: true, upsert: true, runValidators: true }
+    );
+
+		const adminLog = new AdminLog({
+      info: `${self.email} created new avatar image ${avatar.imageUrl} (${avatar.id}).`,
+      actionTaker: { id: self.id, email: self.email },
+      ip
+    })
+
+    await adminLog.save()
+
+    return res.status(200).json({ data: { success: true } })
+	} catch (error) {
     return res.status(500).json({ errors: [{ status: '500', detail: 'Internal Server Error' }] })
   }
 }
