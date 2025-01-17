@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const AvatarSchema = new mongoose.Schema({
+const avatarSchema = new mongoose.Schema({
   adminId: {
     type: Number,
     required: [true, 'Admin Id is required.'],
@@ -15,4 +15,4 @@ const AvatarSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-export const Avatar = mongoose.model('Avatar', AvatarSchema);
+export const Avatar = mongoose.model('Avatar', avatarSchema);
