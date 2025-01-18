@@ -128,13 +128,10 @@ export const adminAvatarCreate = async (req, res) => {
 		const ip = userIp(req)
 		const self = req.currentAdmin
 
-		if (req.body.imageUrl == "") {
-				return res.status(400).json({ errors: [{ status: '400', detail: "imageUrl is required" }] })
-		}
-
-		if (!customValidator.isValidUrl(req.body.imageUrl)) {
-			return res.status(400).json({ errors: [{ status: '400', detail: "Invalid imageUrl" }] })
-		}
+		const validate = await avatarValidate(req.body);
+    if (validate !== true) {
+      return res.status(400).json({ errors: [{ status: '400', detail: validate.error }] });
+    }
 
     const avatar = await Avatar.findOneAndUpdate(
       { imageUrl: req.body.imageUrl },
