@@ -6,7 +6,6 @@ import { adminValidate } from '../../utils/input-validate/adminValidate.js'
 import { avatarValidate } from '../../utils/input-validate/avatarValidate.js'
 import { strongPwOpts } from '../../utils/strongPwOpts.js'
 import { userIp } from '../../utils/userIp.js'
-import { customValidator } from '../../utils/custom-validator/index.js'
 
 export const adminAccountUpdate = async (req, res) => {
   try {
